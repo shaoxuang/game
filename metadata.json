@@ -1,0 +1,5 @@
+{
+  "name": "AI 宝可梦对战 (AI Pokemon Battle)",
+  "description": "一个完全由 AI 生成的宝可梦对战游戏。AI 负责创造宝可梦的属性、技能甚至外观图片。采用回合制战斗系统。",
+  "requestFramePermissions": []
+}
