@@ -1,7 +1,14 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { ElementType, Pokemon, Move } from '../types';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+let ai: GoogleGenAI | null = null;
+
+const getAI = () => {
+  if (!ai) {
+    ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  }
+  return ai;
+};
 
 const SYSTEM_INSTRUCTION = `
 You are a creative game designer for a Pokemon-style battle game.
@@ -13,7 +20,8 @@ Output JSON only.
 export const generateBattleData = async (): Promise<{ player: Omit<Pokemon, 'imageUrl' | 'id' | 'currentHp' | 'isPlayer'>, opponent: Omit<Pokemon, 'imageUrl' | 'id' | 'currentHp' | 'isPlayer'> }> => {
   const model = 'gemini-2.5-flash';
   
-  const response = await ai.models.generateContent({
+  const client = getAI();
+  const response = await client.models.generateContent({
     model,
     contents: "Generate two unique battling monsters (Pokemon-like). One for the player, one for the opponent. Give them Chinese names, elemental types, stats (HP between 100-200), and 4 moves each.",
     config: {
@@ -95,7 +103,8 @@ export const generatePokemonImage = async (description: string): Promise<string>
   const imagePrompt = `A high quality, digital art style sprite of a pokemon-like monster. White background. Style: Anime, cel-shaded, vibrant colors. Description: ${description}`;
 
   try {
-    const response = await ai.models.generateContent({
+    const client = getAI();
+    const response = await client.models.generateContent({
       model,
       contents: imagePrompt,
       config: {

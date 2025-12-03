@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI 宝可梦对战</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Shim process.env for browser environments to prevent ReferenceErrors
+      if (typeof process === 'undefined') {
+        window.process = { env: { API_KEY: '' } };
+      }
+    </script>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
       body {
